@@ -1,5 +1,11 @@
-import { reactive, nextTick } from 'vue';
+import { reactive, inject, nextTick } from 'vue';
 import View from './vue3-progressbar.vue';
+
+import { inject } from "vue";
+
+export const PROVIDER = "progress-bar";
+
+export const useProgressBar = () => inject(PROVIDER);
 
 // eslint-disable-next-line no-unused-vars
 function assign(target, source) {
@@ -35,6 +41,7 @@ export default {
       inverse: false,
       autoFinish: true
     };
+
     const progressOptions = assign(DEFAULT_OPTION, options);
 
     const RADON_LOADING_BAR = reactive({
@@ -222,6 +229,7 @@ export default {
     };
 
     app.component('vue-progress-bar', View);
+    app.provide(PROVIDER, Progress);
     app.config.globalProperties.$Progress = Progress;
   }
 };
