@@ -1,6 +1,6 @@
 {
   "name": "@onekiloparsec/vue-progressbar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A lightweight progress bar for Vuejs 3",
   "files": [
     "dist"
