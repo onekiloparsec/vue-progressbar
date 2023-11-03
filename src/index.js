@@ -209,7 +209,7 @@ export default {
       }
     }
 
-    app.component('vue-progressbar', VueProgressBar)
+    app.component('VueProgressBar', VueProgressBar)
     app.provide(PROVIDER, Progress)
     app.config.globalProperties.$progressBar = Progress
   }
