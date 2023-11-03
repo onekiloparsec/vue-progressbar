@@ -1,26 +1,7 @@
-import { reactive, inject, nextTick } from 'vue';
-import View from './vue3-progressbar.vue';
+import { nextTick, reactive } from 'vue'
+import VueProgressBar from './vue-progressbar.vue'
 
-import { inject } from "vue";
-
-export const PROVIDER = "progress-bar";
-
-export const useProgressBar = () => inject(PROVIDER);
-
-// eslint-disable-next-line no-unused-vars
-function assign(target, source) {
-  for (var index = 1, key, src; index < arguments.length; ++index) {
-    src = arguments[index];
-
-    for (key in src) {
-      if (Object.prototype.hasOwnProperty.call(src, key)) {
-        target[key] = src[key];
-      }
-    }
-  }
-
-  return target;
-}
+const PROVIDER = 'vue-progressbar'
 
 export default {
   install: (app, options) => {
@@ -40,16 +21,16 @@ export default {
       location: 'top',
       inverse: false,
       autoFinish: true
-    };
+    }
 
-    const progressOptions = assign(DEFAULT_OPTION, options);
+    const progressOptions = Object.assign(DEFAULT_OPTION, options)
 
-    const RADON_LOADING_BAR = reactive({
+    const PROGRESS_BAR = reactive({
       percent: 0,
       options: progressOptions
-    });
+    })
 
-    app.provide('RADON_LOADING_BAR', RADON_LOADING_BAR);
+    app.provide('PROGRESS_BAR', PROGRESS_BAR)
 
     let Progress = {
       state: {
@@ -58,178 +39,178 @@ export default {
         timer: null,
         cut: 0
       },
-      start(time) {
-        if (!time) time = 3000;
-        RADON_LOADING_BAR.percent = 0; // RADON_LOADING_BAR.percent
-        RADON_LOADING_BAR.options.show = true;
-        RADON_LOADING_BAR.options.canSuccess = true;
-        this.state.cut = 10000 / Math.floor(time);
-        clearInterval(this.state.timer);
+      start (time) {
+        if (!time) time = 3000
+        PROGRESS_BAR.percent = 0 // PROGRESS_BAR.percent
+        PROGRESS_BAR.options.show = true
+        PROGRESS_BAR.options.canSuccess = true
+        this.state.cut = 10000 / Math.floor(time)
+        clearInterval(this.state.timer)
         this.state.timer = setInterval(() => {
-          this.increase(this.state.cut * Math.random());
-          if (RADON_LOADING_BAR.percent > 95 && RADON_LOADING_BAR.options.autoFinish) {
-            this.finish();
+          this.increase(this.state.cut * Math.random())
+          if (PROGRESS_BAR.percent > 95 && PROGRESS_BAR.options.autoFinish) {
+            this.finish()
           }
-        }, 100);
+        }, 100)
       },
-      set(num) {
-        RADON_LOADING_BAR.options.show = true;
-        RADON_LOADING_BAR.options.canSuccess = true;
-        RADON_LOADING_BAR.percent = Math.floor(num);
+      set (num) {
+        PROGRESS_BAR.options.show = true
+        PROGRESS_BAR.options.canSuccess = true
+        PROGRESS_BAR.percent = Math.floor(num)
       },
-      get() {
-        return Math.floor(RADON_LOADING_BAR.percent);
+      get () {
+        return Math.floor(PROGRESS_BAR.percent)
       },
-      increase(num) {
-        RADON_LOADING_BAR.percent = Math.min(99, RADON_LOADING_BAR.percent + Math.floor(num));
+      increase (num) {
+        PROGRESS_BAR.percent = Math.min(99, PROGRESS_BAR.percent + Math.floor(num))
       },
-      decrease(num) {
-        RADON_LOADING_BAR.percent = RADON_LOADING_BAR.percent - Math.floor(num);
+      decrease (num) {
+        PROGRESS_BAR.percent = PROGRESS_BAR.percent - Math.floor(num)
       },
-      hide() {
-        clearInterval(this.state.timer);
-        this.state.timer = null;
+      hide () {
+        clearInterval(this.state.timer)
+        this.state.timer = null
         setTimeout(() => {
-          RADON_LOADING_BAR.options.show = false;
+          PROGRESS_BAR.options.show = false
           nextTick(() => {
             setTimeout(() => {
-              RADON_LOADING_BAR.percent = 0;
-            }, 100);
-            if (RADON_LOADING_BAR.options.autoRevert) {
+              PROGRESS_BAR.percent = 0
+            }, 100)
+            if (PROGRESS_BAR.options.autoRevert) {
               setTimeout(() => {
-                this.revert();
-              }, 300);
+                this.revert()
+              }, 300)
             }
-          });
-        }, RADON_LOADING_BAR.options.transition.termination);
+          })
+        }, PROGRESS_BAR.options.transition.termination)
       },
-      pause() {
-        clearInterval(this.state.timer);
+      pause () {
+        clearInterval(this.state.timer)
       },
-      finish() {
-        RADON_LOADING_BAR.percent = 100;
-        this.hide();
+      finish () {
+        PROGRESS_BAR.percent = 100
+        this.hide()
       },
-      fail() {
-        RADON_LOADING_BAR.options.canSuccess = false;
-        RADON_LOADING_BAR.percent = 100;
-        this.hide();
+      fail () {
+        PROGRESS_BAR.options.canSuccess = false
+        PROGRESS_BAR.percent = 100
+        this.hide()
       },
-      setFailColor(color) {
-        RADON_LOADING_BAR.options.failedColor = color;
+      setFailColor (color) {
+        PROGRESS_BAR.options.failedColor = color
       },
-      setColor(color) {
-        RADON_LOADING_BAR.options.color = color;
+      setColor (color) {
+        PROGRESS_BAR.options.color = color
       },
-      setLocation(loc) {
-        RADON_LOADING_BAR.options.location = loc;
+      setLocation (loc) {
+        PROGRESS_BAR.options.location = loc
       },
-      setTransition(transition) {
-        RADON_LOADING_BAR.options.transition = transition;
+      setTransition (transition) {
+        PROGRESS_BAR.options.transition = transition
       },
-      tempFailColor(color) {
-        this.state.tFailColor = RADON_LOADING_BAR.options.failedColor;
-        RADON_LOADING_BAR.options.failedColor = color;
+      tempFailColor (color) {
+        this.state.tFailColor = PROGRESS_BAR.options.failedColor
+        PROGRESS_BAR.options.failedColor = color
       },
-      tempColor(color) {
-        this.state.tColor = RADON_LOADING_BAR.options.color;
-        RADON_LOADING_BAR.options.color = color;
+      tempColor (color) {
+        this.state.tColor = PROGRESS_BAR.options.color
+        PROGRESS_BAR.options.color = color
       },
-      tempLocation(loc) {
-        this.state.tLocation = RADON_LOADING_BAR.options.location;
-        RADON_LOADING_BAR.options.location = loc;
+      tempLocation (loc) {
+        this.state.tLocation = PROGRESS_BAR.options.location
+        PROGRESS_BAR.options.location = loc
       },
-      tempTransition(transition) {
-        this.state.tTransition = RADON_LOADING_BAR.options.transition;
-        RADON_LOADING_BAR.options.transition = transition;
+      tempTransition (transition) {
+        this.state.tTransition = PROGRESS_BAR.options.transition
+        PROGRESS_BAR.options.transition = transition
       },
-      revertColor() {
-        RADON_LOADING_BAR.options.color = this.state.tColor;
-        this.state.tColor = '';
+      revertColor () {
+        PROGRESS_BAR.options.color = this.state.tColor
+        this.state.tColor = ''
       },
-      revertFailColor() {
-        RADON_LOADING_BAR.options.failedColor = this.state.tFailColor;
-        this.state.tFailColor = '';
+      revertFailColor () {
+        PROGRESS_BAR.options.failedColor = this.state.tFailColor
+        this.state.tFailColor = ''
       },
-      revertLocation() {
-        RADON_LOADING_BAR.options.location = this.state.tLocation;
-        this.state.tLocation = '';
+      revertLocation () {
+        PROGRESS_BAR.options.location = this.state.tLocation
+        this.state.tLocation = ''
       },
-      revertTransition() {
-        RADON_LOADING_BAR.options.transition = this.state.tTransition;
-        this.state.tTransition = {};
+      revertTransition () {
+        PROGRESS_BAR.options.transition = this.state.tTransition
+        this.state.tTransition = {}
       },
-      revert() {
-        if (RADON_LOADING_BAR.options.autoRevert) {
+      revert () {
+        if (PROGRESS_BAR.options.autoRevert) {
           if (this.state.tColor) {
-            this.revertColor();
+            this.revertColor()
           }
           if (this.state.tFailColor) {
-            this.revertFailColor();
+            this.revertFailColor()
           }
           if (this.state.tLocation) {
-            this.revertLocation();
+            this.revertLocation()
           }
           if (
             this.state.tTransition &&
             (this.state.tTransition.speed !== undefined ||
               this.state.tTransition.opacity !== undefined)
           ) {
-            this.revertTransition();
+            this.revertTransition()
           }
         }
       },
-      parseMeta(meta) {
+      parseMeta (meta) {
         for (var x in meta.func) {
-          let func = meta.func[x];
+          let func = meta.func[x]
           switch (func.call) {
             case 'color':
               switch (func.modifier) {
                 case 'set':
-                  this.setColor(func.argument);
-                  break;
+                  this.setColor(func.argument)
+                  break
                 case 'temp':
-                  this.tempColor(func.argument);
-                  break;
+                  this.tempColor(func.argument)
+                  break
               }
-              break;
+              break
             case 'fail':
               switch (func.modifier) {
                 case 'set':
-                  this.setFailColor(func.argument);
-                  break;
+                  this.setFailColor(func.argument)
+                  break
                 case 'temp':
-                  this.tempFailColor(func.argument);
-                  break;
+                  this.tempFailColor(func.argument)
+                  break
               }
-              break;
+              break
             case 'location':
               switch (func.modifier) {
                 case 'set':
-                  this.setLocation(func.argument);
-                  break;
+                  this.setLocation(func.argument)
+                  break
                 case 'temp':
-                  this.tempLocation(func.argument);
-                  break;
+                  this.tempLocation(func.argument)
+                  break
               }
-              break;
+              break
             case 'transition':
               switch (func.modifier) {
                 case 'set':
-                  this.setTransition(func.argument);
-                  break;
+                  this.setTransition(func.argument)
+                  break
                 case 'temp':
-                  this.tempTransition(func.argument);
-                  break;
+                  this.tempTransition(func.argument)
+                  break
               }
-              break;
+              break
           }
         }
       }
-    };
+    }
 
-    app.component('vue-progress-bar', View);
-    app.provide(PROVIDER, Progress);
-    app.config.globalProperties.$Progress = Progress;
+    app.component('vue-progressbar', VueProgressBar)
+    app.provide(PROVIDER, Progress)
+    app.config.globalProperties.$progressBar = Progress
   }
-};
+}

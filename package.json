@@ -1,25 +1,29 @@
 {
-  "name": "@aacassandra/vue3-progressbar",
-  "version": "1.0.3",
-  "description": "A lightweight progress bar for vuejs 3",
-  "main": "dist/vue3-progressbar.common.js",
-  "publishConfig": {
-    "access": "public"
+  "name": "@onekiloparsec/vue-progressbar",
+  "version": "1.0.0",
+  "description": "A lightweight progress bar for Vuejs 3",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "main": "./dist/vue-progressbar.umd.cjs",
+  "module": "./dist/vue-progressbar.js",
+  "exports": {
+    ".": {
+      "import": "./dist/vue-progressbar.js",
+      "require": "./dist/vue-progressbar.umd.cjs"
+    }
   },
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "build-library": "vue-cli-service build --target lib --name vue3-progressbar ./src/index.js"
+    "dev": "vite",
+    "build": "rimraf dist && rimraf types && vite build",
+    "preview": "vite preview",
+    "test": "vitest"
   },
-  "author": {
-    "name": "Alauddin Afif Cassandra",
-    "email": "alauddinafifcassandra@programmer.net",
-    "url": "https://aacassandra-github.web.app"
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/onekiloparsec/vue-progressbar.git"
   },
-  "repository": "https://github.com/aacassandra/vue3-progressbar",
-  "bugs": "https://github.com/aacassandra/vue3-progressbar/issues",
-  "homepage": "https://github.com/aacassandra/vue3-progressbar#readme",
   "keywords": [
     "vue",
     "vue-progressbar",
@@ -32,23 +36,10 @@
     "progressbar"
   ],
   "license": "MIT",
-  "files": [
-    "dist"
-  ],
-  "dependencies": {
-    "core-js": "^3.6.5",
-    "vue": "^3.0.0"
-  },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0",
-    "@vue/eslint-config-prettier": "^6.0.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-prettier": "^3.1.3",
-    "eslint-plugin-vue": "^7.0.0-0",
-    "prettier": "^1.19.1"
+    "@types/node": "^20.8.10",
+    "@vitejs/plugin-vue": "^4.4.0",
+    "vite": "^4.5.0",
+    "vue": "^3.0.4"
   }
 }

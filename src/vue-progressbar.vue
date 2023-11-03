@@ -3,14 +3,14 @@
 </template>
 
 <script>
-import { inject, computed } from 'vue';
+import { computed, inject } from 'vue';
 const inBrowser = typeof window !== 'undefined';
 
 export default {
-  name: 'VueProgress',
+  name: 'VueProgressBar',
   serverCacheKey: () => 'Progress',
   setup() {
-    const injectedConfig = inject('RADON_LOADING_BAR');
+    const injectedConfig = inject('PROGRESS_BAR');
     const defaultConfig = {
       percent: 0,
       options: {
@@ -28,7 +28,7 @@ export default {
         autoRevert: true,
         inverse: false
       }
-    }
+    };
 
     const progress = inBrowser ? injectedConfig : defaultConfig;
 
@@ -70,7 +70,7 @@ export default {
           'opacity ' +
           options.transition.opacity;
       }
-  
+
       return _style;
     });
 
